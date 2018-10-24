@@ -14,11 +14,11 @@
 Supported Platform:
 .Net Framework 4+
 
-让Property的setter自动调用PropertyChanged方法，避免写一个私有变量，再写一个属性，主要用于WPF程序。使用说明请参阅wiki。
+让Property的setter自动调用PropertyChanged方法，避免写一个私有变量，再写一个属性，主要用于WPF程序。使用说明请参阅wiki或sample。
 
 支持的平台:
 .Net Framework 4+</description>
-    <releaseNotes>The V0.0.1 version;初版</releaseNotes>
+    <releaseNotes>The V0.0.2 version;</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>Qt Property NotifyPropertyChanged WPF</tags>
     <dependencies>

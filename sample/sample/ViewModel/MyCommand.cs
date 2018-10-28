@@ -11,15 +11,21 @@ namespace sample.ViewModel
         public event EventHandler CanExecuteChanged;
 
         private Action m_Action = null;
+        private Func<bool> m_CanExecute = null;
 
-        public MyCommand(Action action)
+        public MyCommand(Action command, Func<bool> canExecute = null)
         {
-            m_Action = action;
+            m_Action = command;
+            m_CanExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            return true;
+            if (m_CanExecute == null)
+            {
+                return true;
+            }
+            return m_CanExecute();
         }
 
         public void Execute(object parameter)

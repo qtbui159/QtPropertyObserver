@@ -18,7 +18,7 @@ Supported Platform:
 
 支持的平台:
 .Net Framework 4+</description>
-    <releaseNotes>The V0.0.2 version;</releaseNotes>
+    <releaseNotes>The V0.0.3 version.Support Ignore,AlsoNotify and RaiseCanExecuteChanged Attributes; V0.03版本，支持忽略通知，同时通知和改变Command可执行性的特性</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>Qt Property NotifyPropertyChanged WPF</tags>
     <dependencies>

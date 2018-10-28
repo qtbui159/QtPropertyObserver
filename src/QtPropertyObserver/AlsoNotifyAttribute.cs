@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 namespace Qt
 {
@@ -10,20 +11,19 @@ namespace Qt
     /// </summary>
     public sealed class AlsoNotifyAttribute : Attribute
     {
-        public string[] PropertiesName { private set; get; }
+        public string[] PropertiesName { private set; get; } = new string[0];
 
         public AlsoNotifyAttribute(params string[] propertiesNames)
         {
             if (propertiesNames == null || propertiesNames.Length == 0)
             {
-                //空数组就行了
-                PropertiesName = new string[0];
+                return;
             }
-            else
-            {
-                PropertiesName = new string[propertiesNames.Length];
-                propertiesNames.CopyTo(PropertiesName, 0);
-            }
+
+            List<string> propertyList = propertiesNames.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+
+            PropertiesName = new string[propertyList.Count];
+            propertyList.CopyTo(PropertiesName, 0);
         }
     }
 }

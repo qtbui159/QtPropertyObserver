@@ -1,4 +1,5 @@
 ﻿using Qt;
+using Qt.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,14 +12,12 @@ namespace sample.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private static QtPropertyObserver<MainViewModel> m_PropertyObserver = new QtPropertyObserver<MainViewModel>();
-
+        [RaisePropertyChanged]
         public int A { get; set; }
 
-        [IgnoreNotify]
         public int B { get; set; }
 
-        [AlsoNotify(nameof(D), nameof(E))]
+        [RaiseOtherPropertyChangedAttribute(nameof(D), nameof(E))]
         [RaiseCanExecuteChanged(nameof(TestCommand))]
         public int C { get; set; }
         public string D

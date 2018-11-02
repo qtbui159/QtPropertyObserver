@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sample"
         mc:Ignorable="d"
-        Title="MainWindow" Height="200" Width="500">
+        Title="{Binding Title}" Height="300" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock>A Value :</TextBlock>
@@ -29,11 +29,18 @@
             <TextBlock Margin="40,0,0,0">E Value :</TextBlock>
             <TextBlock Text="{Binding E}"></TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center">
-            <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding ChangeACommand}">Change A</Button>
-            <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding ChangeBCommand}">Change B</Button>
-            <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding ChangeCCommand}">Change C</Button>
-            <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding TestCommand}">Test</Button>
+        <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding ChangeACommand}">Change A</Button>
+                <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding ChangeBCommand}">Change B</Button>
+                <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding ChangeCCommand}">Change C</Button>
+                <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding TestCommand}">Test</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,20,0,0">
+                <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding StaticCommand}">StaticChange</Button>
+                <Button Width="80" Height="25" Margin="20,0,0,0" Command="{Binding StaticTestCommand}">StaticTest</Button>
+            </StackPanel>
         </StackPanel>
+        
     </Grid>
 </Window>

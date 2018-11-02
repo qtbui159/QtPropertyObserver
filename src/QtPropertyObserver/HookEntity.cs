@@ -27,10 +27,9 @@ namespace Qt
         /// </summary>
         private Dictionary<MethodBase, HashSet<string>> m_MethodMapOtherPropertyName = new Dictionary<MethodBase, HashSet<string>>();
         /// <summary>
-        /// Key为Setter，Value为Command
+        /// Key为Setter，Value为ICommand在HookType中的PropertyInfo
         /// </summary>
-        private Dictionary<MethodBase, HashSet<PropertyInfo>> m_MethodMapCommand = new Dictionary<MethodBase, HashSet<PropertyInfo>>();
-
+        private Dictionary<MethodBase, HashSet<ICommandInfo>> m_MethodMapCommandProperty = new Dictionary<MethodBase, HashSet<ICommandInfo>>();
 
         public HookEntity(Type host)
         {
@@ -54,6 +53,13 @@ namespace Qt
             {
                 throw new ArgumentNullException(nameof(attributeList));
             }
+
+            /*
+            if (attributeList.Count(x => x.GetType() == typeof(RaisePropertyChangedAttribute)) == 0)
+            {
+                //如果没有RaisePropertyChanged，就不处理这个setter了
+                return;
+            }*/
 
             WillBeHookSetter.Add(originMethod);
 
@@ -85,7 +91,7 @@ namespace Qt
             {
                 RaiseCanExecuteChangedAttribute raiseCanExecuteChangedInstance = attr as RaiseCanExecuteChangedAttribute;
 
-                HashSet<PropertyInfo> commandPropertyInfo = new HashSet<PropertyInfo>();
+                HashSet<ICommandInfo> commandInfo = new HashSet<ICommandInfo>();
 
                 foreach (string commandName in raiseCanExecuteChangedInstance.CommandNames)
                 {
@@ -94,8 +100,10 @@ namespace Qt
                     {
                         continue;
                     }
-                    commandPropertyInfo.Add(prop);
+                    commandInfo.Add(new ICommandInfo() { PropertyInfo = prop });
                 }
+
+                m_MethodMapCommandProperty.Add(originMethod, commandInfo);
             }
         }
 
@@ -139,13 +147,66 @@ namespace Qt
 
         public void OnCanExecuteChanged(object instance, MethodBase methodBase)
         {
-            //因为ICommand可以是静态 PS: 这里的instance是指 实现了 INotifyPropertyChanged的实例，不是指ICommand的实例
+            //这里的instance是指 实现了 INotifyPropertyChanged的实例，不是指ICommand的实例
             if (instance == null || methodBase == null)
             {
                 return;
             }
 
+            if (!m_MethodMapCommandProperty.ContainsKey(methodBase))
+            {
+                return;
+            }
+
+            foreach (ICommandInfo commandInfo in m_MethodMapCommandProperty[methodBase])
+            {
+                if (!commandInfo.FoundField)
+                {
+                    //需要寻找
+                    commandInfo.FieldInfo = FindEvent(commandInfo.PropertyInfo.PropertyType, nameof(ICommand.CanExecuteChanged));
+                    commandInfo.FoundField = true;
+                }
+
+                if (commandInfo.FieldInfo == null)
+                {
+                    continue;
+                }
+
+                object commandInstance = commandInfo.PropertyInfo.GetValue(instance, null);
+
+                InvokeEvent(commandInfo.FieldInfo, commandInstance, new object[] { commandInstance, EventArgs.Empty });
+            }
+        }
+
+        public static void OnCanExecuteChanged(HookEntity hookEntity, MethodBase methodBase)
+        {
+            if (methodBase == null || hookEntity == null)
+            {
+                return;
+            }
+
+            if (!hookEntity.m_MethodMapCommandProperty.ContainsKey(methodBase))
+            {
+                return;
+            }
             
+            foreach (ICommandInfo commandInfo in hookEntity.m_MethodMapCommandProperty[methodBase])
+            {
+                if (!commandInfo.FoundField)
+                {
+                    //需要寻找
+                    commandInfo.FieldInfo = FindEvent(commandInfo.PropertyInfo.PropertyType, nameof(ICommand.CanExecuteChanged));
+                    commandInfo.FoundField = true;
+                }
+
+                if (commandInfo.FieldInfo == null)
+                {
+                    continue;
+                }
+
+                object commandInstance = commandInfo.PropertyInfo.GetValue(null, null);
+                InvokeEvent(commandInfo.FieldInfo, commandInstance, new object[] { commandInstance, EventArgs.Empty });
+            }
         }
 
         /// <summary>
@@ -154,7 +215,7 @@ namespace Qt
         /// <param name="type"></param>
         /// <param name="eventName">接口名</param>
         /// <returns></returns>
-        private FieldInfo FindEvent(Type type, string eventName)
+        private static FieldInfo FindEvent(Type type, string eventName)
         {
             if (string.IsNullOrWhiteSpace(eventName))
             {
@@ -184,7 +245,7 @@ namespace Qt
             return fieldInfo;
         }
 
-        private void InvokeEvent(FieldInfo fieldInfo, object instance, params object[] param)
+        private static void InvokeEvent(FieldInfo fieldInfo, object instance, params object[] param)
         {
             MulticastDelegate eventDelegate = fieldInfo.GetValue(instance) as MulticastDelegate;
             if (eventDelegate == null)
@@ -199,5 +260,30 @@ namespace Qt
             }
         }
 
+    }
+
+    class ICommandInfo
+    {
+        /// <summary>
+        /// ICommand在Instance中的Property
+        /// </summary>
+        public PropertyInfo PropertyInfo { get; set; }
+        /// <summary>
+        /// ICommand的event
+        /// </summary>
+        public FieldInfo FieldInfo { get; set; }
+        /// <summary>
+        /// 如果FieldInfo为null的情况下，FoundField又为true，表示已经被搜索过了，只是没搜到
+        /// </summary>
+        public bool FoundField { get; set; } = false;
+
+        /// <summary>
+        /// 因为PropertyInfo相同的情况下，FieldInfo肯定也是一样的
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return PropertyInfo.GetHashCode();
+        }
     }
 }

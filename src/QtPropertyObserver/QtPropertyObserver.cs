@@ -151,27 +151,42 @@ namespace Qt
         /// <param name="__originalMethod"></param>
         private static void PropertyChanged(object __instance, MethodBase __originalMethod)
         {
-            INotifyPropertyChanged notifyPropertyChangedInstance = __instance as INotifyPropertyChanged;
-            if (notifyPropertyChangedInstance == null)
-            {
-                return;
-            }
-
             if (__originalMethod == null)
             {
                 return;
             }
 
-            Type type = __instance.GetType();
-            if (!m_ObserveType.ContainsKey(type))
+            if (__originalMethod.IsStatic)
             {
-                return;
+                //如果这个方法是静态的，那么__instance为null，那么他通知的成员也一定是静态的
+
+                Type type = __originalMethod.DeclaringType; //取到包含该Setter的类
+                if (!m_ObserveType.ContainsKey(type))
+                {
+                    return;
+                }
+
+                //因为INotifyPropertyChanged依赖instance,所以这里只能通知CanExecuteChanged
+                HookEntity.OnCanExecuteChanged(m_ObserveType[type], __originalMethod);
             }
+            else
+            {
+                if (__instance == null)
+                {
+                    return;
+                }
 
-            HookEntity hookEntity = m_ObserveType[type];
+                Type type = __instance.GetType();
+                if (!m_ObserveType.ContainsKey(type))
+                {
+                    return;
+                }
 
-            hookEntity.OnPropertyChanged(__instance, __originalMethod);
-            hookEntity.OnCanExecuteChanged(__instance, __originalMethod);
+                HookEntity hookEntity = m_ObserveType[type];
+
+                hookEntity.OnPropertyChanged(__instance, __originalMethod);
+                hookEntity.OnCanExecuteChanged(__instance, __originalMethod);
+            }
         }
     }
 

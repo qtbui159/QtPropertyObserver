@@ -19,6 +19,7 @@ namespace sample
         {
             base.OnStartup(e);
 
+            QtPropertyObserver.Complete<ViewModelBase>();
             QtPropertyObserver.Complete<MainViewModel>();
 
             MainWindow = new MainWindow();

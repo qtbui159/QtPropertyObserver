@@ -3,6 +3,24 @@
   <PropertyGroup>
     <TargetFramework>net40</TargetFramework>
     <RootNamespace>Qt</RootNamespace>
+    <Version>0.2.0</Version>
+    <Authors>qtbui159</Authors>
+    <Company>qtbui159</Company>
+    <Description>QtPropertyObserver is library for .NET WPF. This Library can help the properties setter auto complete NofityPropertyChanged. Get more help on sample code.
+
+Supported Platform:
+.Net Framework 4+
+
+让Property的setter自动调用PropertyChanged方法，避免写一个私有变量，再写一个属性，主要用于WPF程序。使用说明请参阅sample。
+
+支持的平台:
+.Net Framework 4+</Description>
+    <PackageReleaseNotes>V0.2.0 Code refactoring. Attributes is changed and I support a static method in order to accomplish the goal;
+V0.2.0 版本，重构了代码，Attributes有变化，另外提供了一个静态方法进行使用</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/qtbui159/QtPropertyObserver</PackageProjectUrl>
+    <Copyright>qtbui159</Copyright>
+    <PackageLicenseUrl>https://github.com/qtbui159/QtPropertyObserver/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageTags>WPF INotifyPropertyChanged Property NotifyPropertyChanged Qt</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

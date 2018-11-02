@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sample", "sample\sample.csproj", "{6D67A783-1FEC-46B2-852A-849CC05CD32E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QtPropertyObserver", "..\src\QtPropertyObserver\QtPropertyObserver.csproj", "{10AE8447-3406-443B-8066-0A41CDF9B374}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6D67A783-1FEC-46B2-852A-849CC05CD32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D67A783-1FEC-46B2-852A-849CC05CD32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D67A783-1FEC-46B2-852A-849CC05CD32E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10AE8447-3406-443B-8066-0A41CDF9B374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10AE8447-3406-443B-8066-0A41CDF9B374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10AE8447-3406-443B-8066-0A41CDF9B374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10AE8447-3406-443B-8066-0A41CDF9B374}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

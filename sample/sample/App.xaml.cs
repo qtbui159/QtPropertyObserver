@@ -1,4 +1,6 @@
-﻿using sample.View;
+﻿using Qt;
+using sample.View;
+using sample.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,6 +18,9 @@ namespace sample
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            QtPropertyObserver.Complete<ViewModelBase>();
+            QtPropertyObserver.Complete<MainViewModel>();
 
             MainWindow = new MainWindow();
             MainWindow.Show();

@@ -173,7 +173,11 @@ namespace Qt
                 }
 
                 object commandInstance = commandInfo.PropertyInfo.GetValue(instance, null);
-
+                if (commandInstance == null)
+                {
+                    //为null的情况可能是该viewmodel正在创建中（构造函数对某项赋值），所以为null
+                    continue;
+                }
                 InvokeEvent(commandInfo.FieldInfo, commandInstance, new object[] { commandInstance, EventArgs.Empty });
             }
         }
@@ -205,6 +209,11 @@ namespace Qt
                 }
 
                 object commandInstance = commandInfo.PropertyInfo.GetValue(null, null);
+                if (commandInstance == null)
+                {
+                    //为null的情况可能是该viewmodel正在创建中（构造函数对某项赋值），所以为null
+                    continue;
+                }
                 InvokeEvent(commandInfo.FieldInfo, commandInstance, new object[] { commandInstance, EventArgs.Empty });
             }
         }

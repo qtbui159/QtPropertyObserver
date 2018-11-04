@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net40</TargetFramework>
     <RootNamespace>Qt</RootNamespace>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <Authors>qtbui159</Authors>
     <Company>qtbui159</Company>
     <Description>QtPropertyObserver is library for .NET WPF. This Library can help the properties setter auto complete NofityPropertyChanged. Get more help on sample code.
@@ -15,8 +15,13 @@ Supported Platform:
 
 支持的平台:
 .Net Framework 4+</Description>
-    <PackageReleaseNotes>V0.2.0 Code refactoring. Attributes is changed and I support a static method in order to accomplish the goal;
-V0.2.0 版本，重构了代码，Attributes有变化，另外提供了一个静态方法进行使用</PackageReleaseNotes>
+    <PackageReleaseNotes>ChangeLog:
+V0.2.0 Code refactoring. Attributes is changed and I support a static method in order to accomplish the goal
+V0.2.1 fix a bug-&gt; change a value by Constructor
+
+更新日志:
+V0.2.0 重构了代码，Attributes有变化，另外提供了一个静态方法进行使用
+V0.2.1 修复bug-&gt;构造函数里改变值会报错</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/qtbui159/QtPropertyObserver</PackageProjectUrl>
     <Copyright>qtbui159</Copyright>
     <PackageLicenseUrl>https://github.com/qtbui159/QtPropertyObserver/blob/master/LICENSE</PackageLicenseUrl>
